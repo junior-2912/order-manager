@@ -1,8 +1,8 @@
 package repository;
 
 import entities.Produto;
-import exceptions.ClienteNaoEncontradoException;
 import exceptions.ProdutoDuplicadoException;
+import exceptions.ProdutoNaoEncontradoException;
 
 import java.util.*;
 
@@ -30,7 +30,7 @@ public class RepositorioProduto implements Repositorio<Produto> {
     @Override
     public Produto buscarPorId(int id) {
         if (produtoPorId.containsKey(id)) return produtoPorId.get(id);
-        throw new ProdutoDuplicadoException("Produto com o id informado nao existe!");
+        throw new ProdutoNaoEncontradoException("Produto com o id informado nao existe!");
     }
 
     @Override

@@ -2,8 +2,8 @@ package entities;
 
 
 public class Cliente {
-    private String nome;
-    private int id;
+    private final String nome;
+    private final int id;
     private String email;
 
     public Cliente(String nome, int id, String email) {
