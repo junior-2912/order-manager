@@ -3,6 +3,7 @@ package entities;
 import enums.StatusPedido;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,13 +56,6 @@ public class Pedido {
     }
 
 
-    public void removeItemPedido(ItemPedido itemPedido) {
-        itemPedido.getProduto().setQuantidadeEstoque(itemPedido.getProduto().getQuantidadeEstoque() +
-                itemPedido.getQuantidadeProduto());
-        itensPedido.remove(itemPedido);
-    }
-
-
     public List<ItemPedido> buscarItensPedido() {
         return List.copyOf(itensPedido);
     }
@@ -85,6 +79,15 @@ public class Pedido {
     @Override
     public int hashCode() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return "Id: " + id + " - Dono do pedido: " + cliente.getNome() + "\n"
+                + "Data do pedido: " + dataPedido.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - "
+                + "Status: " + statusPedido
+                + "\n " + itensPedido.stream()
+                .map(item -> item.getProduto().getNome() + " - Quantidade: " + item.getQuantidadeProduto());
     }
 
     public double calcularTotal() {

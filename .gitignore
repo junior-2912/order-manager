@@ -5,6 +5,7 @@ out/
 .kotlin
 .idea/
 gestao-pedidos.iml
+order-manager.iml
 
 ### Eclipse ###
 .apt_generated

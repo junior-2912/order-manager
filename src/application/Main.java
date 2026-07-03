@@ -4,6 +4,7 @@ import entities.Cliente;
 import entities.ItemPedido;
 import entities.Pedido;
 import entities.Produto;
+import enums.StatusPedido;
 import exceptions.*;
 import services.PedidoService;
 
@@ -30,6 +31,19 @@ public class Main {
                     case 2 -> cadastrarProduto(entrada, pedidoService);
                     case 3 -> criarPedido(entrada, pedidoService);
                     case 4 -> adicionarProdutoAoEstoque(entrada, pedidoService);
+                    case 5 -> listarClientes(pedidoService);
+                    case 6 -> listarProdutos(pedidoService);
+                    case 7 -> listarPedidos(pedidoService);
+                    case 8 -> buscarClientePorId(entrada, pedidoService);
+                    case 9 -> buscarProdutoPorId(entrada, pedidoService);
+                    case 10 -> buscarPedidoPorId(entrada, pedidoService);
+                    case 11 -> removerCliente(entrada, pedidoService);
+                    case 12 -> removerProduto(entrada, pedidoService);
+                    case 13 -> adicionarItensAoPedido(entrada, pedidoService);
+                    case 14 -> alterarStatusPedido(entrada, pedidoService);
+                    case 15 -> cancelarPedido(entrada, pedidoService);
+                    case 16 -> confirmarPedido(entrada, pedidoService);
+                    default -> System.out.println("Digite um numero valido!");
                 }
             } catch (ClienteDuplicadoException | ClienteNaoEncontradoException | PedidoDuplicadoException |
                      PedidoNaoEncontradoException | EstoqueInsuficienteException | ProdutoDuplicadoException |
@@ -37,6 +51,7 @@ public class Main {
                 System.out.println(e.getMessage());
             } catch (InputMismatchException e) {
                 System.out.println("Digite o que lhe é pedido!");
+                return;
             }
         }
         entrada.close();
@@ -56,11 +71,10 @@ public class Main {
         System.out.println("10 - Buscar pedidos por id");
         System.out.println("11 - Remover cliente");
         System.out.println("12 - Remover produto");
-        System.out.println("13 - Remover pedido");
-        System.out.println("14 - Adicionar items ao pedido");
-        System.out.println("15 - Alterar status do pedido");
-        System.out.println("16 - Cancelar pedido");
-        System.out.println("17 - Confirmar pedido");
+        System.out.println("13 - Adicionar items ao pedido");
+        System.out.println("14 - Alterar status do pedido");
+        System.out.println("15 - Cancelar pedido");
+        System.out.println("16 - Confirmar pedido");
     }
 
     public static void cadastrarCliente(Scanner entrada, PedidoService pedidoService) {
@@ -127,6 +141,87 @@ public class Main {
         if (pedidoService.adicionarProdutoAoEstoque(quantidade, id)) {
             System.out.println("Quantidade deve ser maior que zero!");
         }
+    }
+
+    public static void listarClientes(PedidoService pedidoService) {
+        pedidoService.buscarTodosClientes().forEach(System.out::println);
+    }
+
+    public static void listarProdutos(PedidoService pedidoService) {
+        pedidoService.buscarTodosClientes().forEach(System.out::println);
+    }
+
+    public static void listarPedidos(PedidoService pedidoService) {
+        pedidoService.buscarTodosClientes().forEach(System.out::println);
+    }
+
+    public static void buscarClientePorId(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do cliente: ");
+        int id = entrada.nextInt();
+        System.out.println(pedidoService.buscarClientePorId(id));
+    }
+
+    public static void buscarProdutoPorId(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do produto: ");
+        int id = entrada.nextInt();
+        System.out.println(pedidoService.buscarProdutoPorId(id));
+    }
+
+    public static void buscarPedidoPorId(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do pedido: ");
+        int id = entrada.nextInt();
+        System.out.println(pedidoService.buscarPedidoPorId(id));
+    }
+
+    public static void removerCliente(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do cliente: ");
+        int id = entrada.nextInt();
+
+        pedidoService.removerCliente(pedidoService.buscarClientePorId(id));
+        System.out.println("Cliente removido com sucesso!");
+    }
+
+    public static void removerProduto(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do produto: ");
+        int id = entrada.nextInt();
+
+        pedidoService.removerProduto(pedidoService.buscarProdutoPorId(id));
+        System.out.println("Produto removido com sucesso!");
+    }
+
+    public static void adicionarItensAoPedido(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do pedido que sera adicionado os produtos: ");
+        int idPedido = entrada.nextInt();
+        System.out.print("Digite o id do produto a ser adicionado: ");
+        int idProduto = entrada.nextInt();
+        System.out.print("Digite a quantidade: ");
+        int quantidadeProduto = entrada.nextInt();
+
+        if (pedidoService.adicionarItensAoPedido(pedidoService.buscarProdutoPorId(idProduto), quantidadeProduto, idPedido)) {
+            System.out.println("Item adicionado com sucesso! ");
+        } else {
+            System.out.println("Nao foi possivel adicionar o item! ");
+        }
+    }
+
+    public static void alterarStatusPedido(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do pedido a ser alterado: ");
+        int idPedido = entrada.nextInt();
+        entrada.nextLine();
+        System.out.print("Digite o status atualizado do pedido (PENDENTE, PAGO, ENVIADO, ENTREGUE, CANCELADO): ");
+        String status = entrada.nextLine();
+
+        pedidoService.alterarStatusPedido(idPedido, status);
+    }
+
+    public static void cancelarPedido(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do pedido a ser cancelado: ");
+        pedidoService.cancelarPedido(entrada.nextInt());
+    }
+
+    public static void confirmarPedido(Scanner entrada, PedidoService pedidoService) {
+        System.out.print("Digite o id do pedido a ser finalizado: ");
+        pedidoService.confirmarPedido(entrada.nextInt());
     }
 }
 
