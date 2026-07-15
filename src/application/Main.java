@@ -130,7 +130,7 @@ public class Main {
         int id = entrada.nextInt();
         System.out.print("Digite a quantidade a dar entrada: ");
         int quantidade = entrada.nextInt();
-        if (lojaService.adicionarProdutoAoEstoque(quantidade, id)) {
+        if (!lojaService.adicionarProdutoAoEstoque(quantidade, id)) {
             System.out.println("Quantidade deve ser maior que zero!");
         }
     }
@@ -140,11 +140,11 @@ public class Main {
     }
 
     public static void listarProdutos(LojaService lojaService) {
-        lojaService.buscarTodosClientes().forEach(System.out::println);
+        lojaService.buscarTodosProdutos().forEach(System.out::println);
     }
 
     public static void listarPedidos(LojaService lojaService) {
-        lojaService.buscarTodosClientes().forEach(System.out::println);
+        lojaService.buscarTodosPedidos().forEach(System.out::println);
     }
 
     public static void buscarClientePorId(Scanner entrada, LojaService lojaService) {
@@ -213,7 +213,8 @@ public class Main {
 
     public static void confirmarPedido(Scanner entrada, LojaService lojaService) {
         System.out.print("Digite o id do pedido a ser finalizado: ");
-        lojaService.confirmarPedido(entrada.nextInt());
+        double valor = lojaService.confirmarPedido(entrada.nextInt());
+        System.out.printf("Valor total: " + String.format("%.2f", valor));
     }
 }
 

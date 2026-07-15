@@ -44,6 +44,10 @@ public class Produto {
         setQuantidadeEstoque(this.quantidadeEstoque + quantidadeEstoque);
     }
 
+    public void baixarEstoque(int quantidadeEstoque) {
+        setQuantidadeEstoque(this.quantidadeEstoque - quantidadeEstoque);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

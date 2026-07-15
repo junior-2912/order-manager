@@ -47,7 +47,7 @@ public class Pedido {
         if (itemPedido != null) {
             boolean itemValido = itensPedido.add(itemPedido);
             if (itemValido) {
-                itemPedido.atualizarEstoque(itemPedido.getQuantidadeProduto());
+                itemPedido.atualizarEstoque(itemPedido.getQuantidadeProduto(), "-");
             }
             return itemValido;
         }
@@ -60,9 +60,7 @@ public class Pedido {
     }
 
     public void cancelarPedido() {
-        itensPedido
-                .forEach(itemPedido -> itemPedido.getProduto().setQuantidadeEstoque(itemPedido.getProduto().getQuantidadeEstoque() +
-                        itemPedido.getQuantidadeProduto()));
+        itensPedido.forEach(itemPedido -> itemPedido.atualizarEstoque(itemPedido.getQuantidadeProduto(), "+"));
         itensPedido.clear();
         this.statusPedido = StatusPedido.CANCELADO;
     }
@@ -85,8 +83,7 @@ public class Pedido {
         return "Id: " + id + " - Dono do pedido: " + cliente.getNome() + "\n"
                 + "Data do pedido: " + dataPedido.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " - "
                 + "Status: " + statusPedido
-                + "\n " + itensPedido.stream()
-                .map(item -> item.getProduto().getNome() + " - Quantidade: " + item.getQuantidadeProduto());
+                + "\n " + itensPedido;
     }
 
     public double calcularTotal() {

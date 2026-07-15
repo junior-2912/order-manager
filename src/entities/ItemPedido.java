@@ -30,8 +30,14 @@ public class ItemPedido {
         return precoProdutoMomentoCompra * quantidadeProduto;
     }
 
-    public void atualizarEstoque(int quantidadeProduto) {
-        produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() - quantidadeProduto);
+    public void atualizarEstoque(int quantidadeProduto, String operacao) {
+        switch (operacao) {
+            case "-" -> produto.baixarEstoque(quantidadeProduto);
+            case "+" -> produto.entradaEstoque(quantidadeProduto);
+            default -> {
+                throw new IllegalArgumentException("Erro ao atualizar estoque");
+            }
+        }
     }
 
     @Override
@@ -45,5 +51,16 @@ public class ItemPedido {
     @Override
     public int hashCode() {
         return Objects.hashCode(produto);
+    }
+
+    //Ajustar esse toString
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ItemPedido{");
+        sb.append("produto=").append(produto);
+        sb.append(", quantidadeProduto=").append(quantidadeProduto);
+        sb.append(", precoProdutoMomentoCompra=").append(precoProdutoMomentoCompra);
+        sb.append('}');
+        return sb.toString();
     }
 }

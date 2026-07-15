@@ -90,6 +90,7 @@ public class LojaService {
 
     public double confirmarPedido(int idPedido) {
         Pedido pedido = buscarPedidoPorId(idPedido);
+        pedido.setStatusPedido(StatusPedido.PAGO);
         return pedido.calcularTotal();
     }
 }
