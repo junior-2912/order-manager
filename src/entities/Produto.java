@@ -7,7 +7,7 @@ public class Produto {
     private int quantidadeEstoque;
 
     public Produto(int id, String nome, double preco, int quantidadeEstoque) {
-        if (preco <= 0 && quantidadeEstoque < 0) {
+        if (preco <= 0 || quantidadeEstoque < 0) {
             throw new IllegalArgumentException("Valores invalidos!");
         }
         this.id = id;
@@ -38,6 +38,10 @@ public class Produto {
 
     public void setQuantidadeEstoque(int quantidadeEstoque) {
         this.quantidadeEstoque = quantidadeEstoque;
+    }
+
+    public void entradaEstoque(int quantidadeEstoque) {
+        setQuantidadeEstoque(this.quantidadeEstoque + quantidadeEstoque);
     }
 
     @Override

@@ -12,7 +12,7 @@ import repository.RepositorioProduto;
 
 import java.util.List;
 
-public class PedidoService {
+public class LojaService {
     private RepositorioPedido repositorioPedido = new RepositorioPedido();
     private RepositorioCliente repositorioCliente = new RepositorioCliente();
     private RepositorioProduto repositorioProduto = new RepositorioProduto();
@@ -25,10 +25,7 @@ public class PedidoService {
         return repositorioCliente.salvar(cliente);
     }
 
-    public boolean cadastrarPedido(Pedido pedido, ItemPedido itemPedido) {
-        if (itemPedido.getQuantidadeProduto() > itemPedido.getProduto().getQuantidadeEstoque()) {
-            throw new EstoqueInsuficienteException("A quantidade pedida é maior que a disponivel no estoque!");
-        }
+    public boolean cadastrarPedido(Pedido pedido) {
         return repositorioPedido.salvar(pedido);
     }
 
@@ -41,7 +38,7 @@ public class PedidoService {
         if (quantidade <= 0) {
             return false;
         }
-        produto.setQuantidadeEstoque(quantidade);
+        produto.entradaEstoque(quantidade);
         return true;
     }
 
@@ -75,6 +72,9 @@ public class PedidoService {
 
     public boolean adicionarItensAoPedido(Produto produto, int quantidadeProduto, int idPedido) {
         Pedido pedido = repositorioPedido.buscarPorId(idPedido);
+        if (quantidadeProduto > produto.getQuantidadeEstoque()) {
+            throw new EstoqueInsuficienteException("Estoque insuficiente!");
+        }
         return pedido.addItemPedido(new ItemPedido(produto, quantidadeProduto));
     }
 

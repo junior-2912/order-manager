@@ -1,6 +1,7 @@
 package entities;
 
 import enums.StatusPedido;
+import exceptions.ProdutoNaoEncontradoException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,10 +16,9 @@ public class Pedido {
     private StatusPedido statusPedido;
     private Set<ItemPedido> itensPedido = new HashSet<>();
 
-    public Pedido(int id, Cliente cliente, ItemPedido itemPedido) {
+    public Pedido(int id, Cliente cliente) {
         this.id = id;
         this.cliente = cliente;
-        this.itensPedido.add(itemPedido);
         this.dataPedido = LocalDateTime.now();
         this.statusPedido = StatusPedido.PENDENTE;
     }
@@ -47,12 +47,11 @@ public class Pedido {
         if (itemPedido != null) {
             boolean itemValido = itensPedido.add(itemPedido);
             if (itemValido) {
-                itemPedido.getProduto().setQuantidadeEstoque(itemPedido.getProduto().getQuantidadeEstoque() -
-                        itemPedido.getQuantidadeProduto());
+                itemPedido.atualizarEstoque(itemPedido.getQuantidadeProduto());
             }
             return itemValido;
         }
-        throw new IllegalArgumentException("Item de pedido invalido!");
+        throw new ProdutoNaoEncontradoException("Item de pedido invalido ou nao encontrado!");
     }
 
 
