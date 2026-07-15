@@ -37,5 +37,6 @@ public class RepositorioPedido implements Repositorio<Pedido> {
     @Override
     public void remover(Pedido item) {
         pedidos.remove(item);
+        pedidosPorId.remove(item.getId());
     }
 }

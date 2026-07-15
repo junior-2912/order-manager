@@ -36,5 +36,6 @@ public class RepositorioProduto implements Repositorio<Produto> {
     @Override
     public void remover(Produto item) {
         produtos.remove(item);
+        produtoPorId.remove(item.getId());
     }
 }
