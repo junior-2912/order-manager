@@ -6,7 +6,9 @@ import entities.Produto;
 import exceptions.*;
 import services.LojaService;
 
+import java.sql.SQLOutput;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -41,6 +43,8 @@ public class Main {
                     case 14 -> alterarStatusPedido(entrada, lojaService);
                     case 15 -> cancelarPedido(entrada, lojaService);
                     case 16 -> confirmarPedido(entrada, lojaService);
+                    case 17 -> listarPedidosPorCliente(entrada, lojaService);
+                    case 18 -> listarProdutosMaisVendidos(lojaService);
                     default -> System.out.println("Digite um numero valido!");
                 }
             } catch (ClienteDuplicadoException | ClienteNaoEncontradoException | PedidoDuplicadoException |
@@ -49,10 +53,23 @@ public class Main {
                 System.out.println(e.getMessage());
             } catch (InputMismatchException e) {
                 System.out.println("Digite o que lhe é pedido!");
-                return;
             }
         }
         entrada.close();
+    }
+
+    private static void listarProdutosMaisVendidos(LojaService lojaService) {
+        System.out.println("Top 5 produtos mais vendidos");
+
+    }
+
+    private static void listarPedidosPorCliente(Scanner entrada, LojaService lojaService) {
+        System.out.println("Digite o id do cliente: ");
+        int id = entrada.nextInt();
+
+        List<Pedido> pedidos = lojaService.listarPedidosPorCliente(id);
+        System.out.println("Cliente: " + lojaService.buscarClientePorId(id).getNome() + "\n Pedidos:");
+        pedidos.forEach(System.out::println);
     }
 
     public static void mostrarMenu() {
@@ -73,6 +90,8 @@ public class Main {
         System.out.println("14 - Alterar status do pedido");
         System.out.println("15 - Cancelar pedido");
         System.out.println("16 - Confirmar pedido");
+        System.out.println("17 - Pedidos por cliente");
+        System.out.println("18 - Produtos mais vendidos");
     }
 
     public static void cadastrarCliente(Scanner entrada, LojaService lojaService) {

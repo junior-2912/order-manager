@@ -45,11 +45,7 @@ public class Pedido {
 
     public boolean addItemPedido(ItemPedido itemPedido) {
         if (itemPedido != null) {
-            boolean itemValido = itensPedido.add(itemPedido);
-            if (itemValido) {
-                itemPedido.atualizarEstoque(itemPedido.getQuantidadeProduto(), "-");
-            }
-            return itemValido;
+            return itensPedido.add(itemPedido);
         }
         throw new ProdutoNaoEncontradoException("Item de pedido invalido ou nao encontrado!");
     }

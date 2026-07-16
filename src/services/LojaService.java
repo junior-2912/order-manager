@@ -6,10 +6,12 @@ import entities.Pedido;
 import entities.Produto;
 import enums.StatusPedido;
 import exceptions.EstoqueInsuficienteException;
+import exceptions.PedidoFinalizadoException;
 import repository.RepositorioCliente;
 import repository.RepositorioPedido;
 import repository.RepositorioProduto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LojaService {
@@ -75,7 +77,12 @@ public class LojaService {
         if (quantidadeProduto > produto.getQuantidadeEstoque()) {
             throw new EstoqueInsuficienteException("Estoque insuficiente!");
         }
-        return pedido.addItemPedido(new ItemPedido(produto, quantidadeProduto));
+        ItemPedido itemPedido = new ItemPedido(produto, quantidadeProduto);
+        boolean isAdd = pedido.addItemPedido(itemPedido);
+        if (isAdd) {
+            produto.baixarEstoque(quantidadeProduto);
+        }
+        return isAdd;
     }
 
     public void alterarStatusPedido(int idPedido, String status) {
@@ -90,7 +97,26 @@ public class LojaService {
 
     public double confirmarPedido(int idPedido) {
         Pedido pedido = buscarPedidoPorId(idPedido);
+        if (pedido.getStatusPedido() == StatusPedido.PAGO || pedido.getStatusPedido() == StatusPedido.ENTREGUE) {
+            throw new PedidoFinalizadoException("Pedido ja esta finalizado!");
+        }
         pedido.setStatusPedido(StatusPedido.PAGO);
         return pedido.calcularTotal();
+    }
+
+    public List<Pedido> listarPedidosPorCliente(int idCliente) {
+        Cliente cliente = repositorioCliente.buscarPorId(idCliente);
+        List<Pedido> pedidos = new ArrayList<>();
+        pedidos = repositorioPedido.buscarTodos()
+                .stream()
+                .filter(pedido -> pedido.getCliente() == cliente)
+                .toList();
+        return pedidos;
+    }
+
+    public List<Produto> listarProdutosMaisVendidos() {
+        List<Produto> produtosMaisVendidos = new ArrayList<>();
+
+        repositorioProduto.buscarTodos().stream().
     }
 }

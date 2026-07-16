@@ -30,16 +30,6 @@ public class ItemPedido {
         return precoProdutoMomentoCompra * quantidadeProduto;
     }
 
-    public void atualizarEstoque(int quantidadeProduto, String operacao) {
-        switch (operacao) {
-            case "-" -> produto.baixarEstoque(quantidadeProduto);
-            case "+" -> produto.entradaEstoque(quantidadeProduto);
-            default -> {
-                throw new IllegalArgumentException("Erro ao atualizar estoque");
-            }
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
