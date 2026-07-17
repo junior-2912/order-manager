@@ -11,8 +11,8 @@ import repository.RepositorioCliente;
 import repository.RepositorioPedido;
 import repository.RepositorioProduto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LojaService {
     private RepositorioPedido repositorioPedido = new RepositorioPedido();
@@ -115,8 +115,18 @@ public class LojaService {
     }
 
     public List<Produto> listarProdutosMaisVendidos() {
-        List<Produto> produtosMaisVendidos = new ArrayList<>();
+        List<Produto> produtosMaisVendidos = repositorioPedido.buscarTodos()
+                .stream()
+                .flatMap(pedido -> pedido.buscarItensPedido().stream())
+                .collect(Collectors.groupingBy(ItemPedido::getProduto,
+                        Collectors.summingInt(ItemPedido::getQuantidadeProduto)))
+                .entrySet()
+                .stream()
+                .sorted(Comparator.comparingInt(Map.Entry<Produto, Integer>::getValue).reversed())
+                .limit(3)
+                .map(Map.Entry::getKey)
+                .toList();
 
-        repositorioProduto.buscarTodos().stream().
+        return produtosMaisVendidos;
     }
 }
