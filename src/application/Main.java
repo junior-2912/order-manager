@@ -6,9 +6,9 @@ import entities.Produto;
 import exceptions.*;
 import services.LojaService;
 
-import java.sql.SQLOutput;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -59,8 +59,10 @@ public class Main {
     }
 
     private static void listarProdutosMaisVendidos(LojaService lojaService) {
-        System.out.println("Top 5 produtos mais vendidos");
-
+        System.out.println("Top 3 produtos mais vendidos");
+        for (Map.Entry<Produto, Integer> listarProdutosMaisVendido : lojaService.listarProdutosMaisVendidos()) {
+            System.out.println(listarProdutosMaisVendido.getKey().getNome() + " -> " + listarProdutosMaisVendido.getValue());
+        }
     }
 
     private static void listarPedidosPorCliente(Scanner entrada, LojaService lojaService) {
@@ -91,7 +93,7 @@ public class Main {
         System.out.println("15 - Cancelar pedido");
         System.out.println("16 - Confirmar pedido");
         System.out.println("17 - Pedidos por cliente");
-        System.out.println("18 - Produtos mais vendidos");
+        System.out.println("18 - Top 3 produtos mais vendidos");
     }
 
     public static void cadastrarCliente(Scanner entrada, LojaService lojaService) {
@@ -235,6 +237,8 @@ public class Main {
         double valor = lojaService.confirmarPedido(entrada.nextInt());
         System.out.printf("Valor total: " + String.format("%.2f", valor));
     }
+
+
 }
 
 

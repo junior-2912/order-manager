@@ -114,8 +114,8 @@ public class LojaService {
         return pedidos;
     }
 
-    public List<Produto> listarProdutosMaisVendidos() {
-        List<Produto> produtosMaisVendidos = repositorioPedido.buscarTodos()
+    public List<Map.Entry<Produto, Integer>> listarProdutosMaisVendidos() {
+        return repositorioPedido.buscarTodos()
                 .stream()
                 .flatMap(pedido -> pedido.buscarItensPedido().stream())
                 .collect(Collectors.groupingBy(ItemPedido::getProduto,
@@ -124,9 +124,6 @@ public class LojaService {
                 .stream()
                 .sorted(Comparator.comparingInt(Map.Entry<Produto, Integer>::getValue).reversed())
                 .limit(3)
-                .map(Map.Entry::getKey)
                 .toList();
-
-        return produtosMaisVendidos;
     }
 }
