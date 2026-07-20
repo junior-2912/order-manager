@@ -44,7 +44,7 @@ public class Main {
                     case 15 -> cancelarPedido(entrada, lojaService);
                     case 16 -> confirmarPedido(entrada, lojaService);
                     case 17 -> listarPedidosPorCliente(entrada, lojaService);
-                    case 18 -> listarProdutosMaisVendidos(lojaService);
+                    case 18 -> gerarRelatorio(lojaService);
                     default -> System.out.println("Digite um numero valido!");
                 }
             } catch (ClienteDuplicadoException | ClienteNaoEncontradoException | PedidoDuplicadoException |
@@ -56,6 +56,23 @@ public class Main {
             }
         }
         entrada.close();
+    }
+
+    private static void gerarRelatorio(LojaService lojaService) {
+        System.out.println("RELATORIO GERAL DA LOJA");
+        System.out.println("Pedidos realizados: " + lojaService.buscarTodosPedidos().size());
+        System.out.println("Faturamento total: " + lojaService.calcularFaturamentoTotal());
+        System.out.println("Ticket medio: " + lojaService.calcularTicketMedio());
+        System.out.println("Cliente com mais pedidos: " + lojaService.buscarClienteComMaisCompras());
+        System.out.println("3 Produtos mais vendidos:");
+        for (Map.Entry<Produto, Integer> entry : lojaService.listarProdutosMaisVendidos()) {
+            System.out.println(entry.getKey().getNome() + " -> " + entry.getValue());
+        }
+    }
+
+    private static void calcularTicketMedio(LojaService lojaService) {
+        System.out.println("Ticket Medio");
+        lojaService.calcularTicketMedio();
     }
 
     private static void listarProdutosMaisVendidos(LojaService lojaService) {
@@ -93,7 +110,8 @@ public class Main {
         System.out.println("15 - Cancelar pedido");
         System.out.println("16 - Confirmar pedido");
         System.out.println("17 - Pedidos por cliente");
-        System.out.println("18 - Top 3 produtos mais vendidos");
+        System.out.println("18 - Relatorio da loja");
+        System.out.println("19 - Faturamento Total");
     }
 
     public static void cadastrarCliente(Scanner entrada, LojaService lojaService) {

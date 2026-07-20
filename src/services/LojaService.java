@@ -5,6 +5,7 @@ import entities.ItemPedido;
 import entities.Pedido;
 import entities.Produto;
 import enums.StatusPedido;
+import exceptions.ClienteNaoEncontradoException;
 import exceptions.EstoqueInsuficienteException;
 import exceptions.PedidoFinalizadoException;
 import repository.RepositorioCliente;
@@ -97,7 +98,7 @@ public class LojaService {
 
     public double confirmarPedido(int idPedido) {
         Pedido pedido = buscarPedidoPorId(idPedido);
-        if (pedido.getStatusPedido() == StatusPedido.PAGO || pedido.getStatusPedido() == StatusPedido.ENTREGUE) {
+        if (pedido.getStatusPedido() == StatusPedido.PAGO) {
             throw new PedidoFinalizadoException("Pedido ja esta finalizado!");
         }
         pedido.setStatusPedido(StatusPedido.PAGO);
@@ -125,5 +126,28 @@ public class LojaService {
                 .sorted(Comparator.comparingInt(Map.Entry<Produto, Integer>::getValue).reversed())
                 .limit(3)
                 .toList();
+    }
+
+
+    public double calcularFaturamentoTotal() {
+        return repositorioPedido.buscarTodos().stream()
+                .filter(p -> p.getStatusPedido().equals(StatusPedido.PAGO))
+                .map(Pedido::calcularTotal)
+                .reduce(0.0, Double::sum);
+    }
+
+    public double calcularTicketMedio() {
+        return repositorioPedido.buscarTodos().stream().mapToDouble(Pedido::calcularTotal).average().orElse(0);
+    }
+
+    public Cliente buscarClienteComMaisCompras() {
+        Map<Cliente, List<Pedido>> mapa = repositorioPedido.buscarTodos()
+                .stream()
+                .collect(Collectors.groupingBy(Pedido::getCliente));
+
+        return mapa.entrySet()
+                .stream()
+                .max(Comparator.comparingInt(entry -> entry.getValue().size()))
+                .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente nao encontrado!")).getKey();
     }
 }

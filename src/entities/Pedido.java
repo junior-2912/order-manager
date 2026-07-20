@@ -56,7 +56,7 @@ public class Pedido {
     }
 
     public void cancelarPedido() {
-        itensPedido.forEach(itemPedido -> itemPedido.atualizarEstoque(itemPedido.getQuantidadeProduto(), "+"));
+        itensPedido.forEach(itemPedido -> itemPedido.getProduto().entradaEstoque(itemPedido.getQuantidadeProduto()));
         itensPedido.clear();
         this.statusPedido = StatusPedido.CANCELADO;
     }
