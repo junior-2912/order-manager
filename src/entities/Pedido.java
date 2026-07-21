@@ -24,6 +24,13 @@ public class Pedido {
         this.statusPedido = StatusPedido.PENDENTE;
     }
 
+    public Pedido(int id, Cliente cliente, LocalDateTime dataPedido, StatusPedido statusPedido) {
+        this.id = id;
+        this.cliente = cliente;
+        this.dataPedido = dataPedido;
+        this.statusPedido = statusPedido;
+    }
+
     public int getId() {
         return id;
     }

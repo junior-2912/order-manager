@@ -18,10 +18,12 @@ public class PersistencePedido implements Persistence<Pedido> {
             if (Files.notExists(caminho.getParent())) {
                 Files.createDirectories(caminho.getParent());
             }
-            Files.writeString(caminho,
-                    "\n" + item.getId() + ";" + item.getCliente().getId() + ";" + item.getDataPedido().format(FORMATTER) + ";" + item.getStatusPedido() + System.lineSeparator(),
+            Files.writeString(caminho,item.getId() + ";" + item.getCliente().getId() + ";" + item.getDataPedido().format(FORMATTER) + ";" + item.getStatusPedido() + System.lineSeparator(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND);
+
+            PersistenceItemPedido itemPedido = new PersistenceItemPedido();
+            itemPedido.salvar(item);
         } catch (IOException e) {
             throw new OperacaoArquivo(e.getMessage());
         }

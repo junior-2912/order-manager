@@ -7,12 +7,21 @@ import entities.Produto;
 import enums.StatusPedido;
 import exceptions.ClienteNaoEncontradoException;
 import exceptions.EstoqueInsuficienteException;
+import exceptions.OperacaoArquivo;
 import exceptions.PedidoFinalizadoException;
 import repository.RepositorioCliente;
 import repository.RepositorioPedido;
 import repository.RepositorioProduto;
 
-import java.util.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LojaService {
@@ -23,6 +32,17 @@ public class LojaService {
     private Persistence<Produto> produtoPersistence = new PersistenceProduto();
     private Persistence<Cliente> clientePersistence = new PersistenceCliente();
     private Persistence<Pedido> pedidoPersistence = new PersistencePedido();
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+
+    public LojaService() {
+        carregarProdutos(Path.of("data\\produtos.csv"));
+        carregarClientes(Path.of("data\\clientes.csv"));
+        carregarPedidos(Path.of("data\\pedidos.csv"));
+        carregarItens(Path.of("data\\itens_pedido.csv"));
+    }
+
 
     public boolean cadastrarProduto(Produto produto) {
         boolean isCadastrado = repositorioProduto.salvar(produto);
@@ -159,5 +179,73 @@ public class LojaService {
                 .stream()
                 .max(Comparator.comparingInt(entry -> entry.getValue().size()))
                 .orElseThrow(() -> new ClienteNaoEncontradoException("Cliente nao encontrado!")).getKey();
+    }
+
+    private void carregarProdutos(Path caminho) {
+        try {
+            List<String> linhas = Files.readAllLines(caminho);
+
+            for (String linha : linhas) {
+                String[] dados = linha.split(";");
+                Produto produto = new Produto(Integer.parseInt(dados[0]),
+                        dados[1],
+                        Double.parseDouble(dados[2]),
+                        Integer.parseInt(dados[3]));
+                repositorioProduto.salvar(produto);
+            }
+        } catch (IOException e) {
+            throw new OperacaoArquivo(e.getMessage());
+        }
+    }
+
+
+    private void carregarClientes(Path caminho) {
+        try {
+            List<String> linhas = Files.readAllLines(caminho);
+
+            for (String linha : linhas) {
+                String[] dados = linha.split(";");
+                Cliente cliente = new Cliente(Integer.parseInt(dados[0]), dados[1], dados[2]);
+                repositorioCliente.salvar(cliente);
+            }
+        } catch (IOException e) {
+            throw new OperacaoArquivo(e.getMessage());
+        }
+    }
+
+    private void carregarPedidos(Path caminho) {
+        try {
+            List<String> linhas = Files.readAllLines(caminho);
+
+            for (String linha : linhas) {
+                String[] dados = linha.split(";");
+                Pedido pedido = new Pedido(Integer.parseInt(dados[0]),
+                        repositorioCliente.buscarPorId(Integer.parseInt(dados[1])),
+                        LocalDateTime.parse(dados[2], FORMATTER),
+                        StatusPedido.valueOf(dados[3]));
+
+                repositorioPedido.salvar(pedido);
+            }
+        } catch (IOException e) {
+            throw new OperacaoArquivo(e.getMessage());
+        }
+    }
+
+    private void carregarItens(Path caminho) {
+        try {
+            List<String> linhas = Files.readAllLines(caminho);
+
+            for (String linha : linhas) {
+                String[] dados = linha.split(";");
+
+                Pedido pedido = repositorioPedido.buscarPorId(Integer.parseInt(dados[0]));
+                Produto produto = repositorioProduto.buscarPorId(Integer.parseInt(dados[1]));
+                pedido.addItemPedido(new ItemPedido(produto, Integer.parseInt(dados[2])));
+            }
+
+
+        } catch (IOException e) {
+            throw new OperacaoArquivo(e.getMessage());
+        }
     }
 }

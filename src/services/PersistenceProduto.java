@@ -16,7 +16,7 @@ public class PersistenceProduto implements Persistence<Produto> {
             if (Files.notExists(caminho.getParent())) {
                 Files.createDirectories(caminho.getParent());
             }
-            Files.writeString(caminho, "\n" + item.getId() + ";" + item.getNome() + ";" + item.getPreco() + ";" + item.getQuantidadeEstoque() + System.lineSeparator(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            Files.writeString(caminho, + item.getId() + ";" + item.getNome() + ";" + item.getPreco() + ";" + item.getQuantidadeEstoque() + System.lineSeparator(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
             throw new OperacaoArquivo(e.getMessage());
         }
