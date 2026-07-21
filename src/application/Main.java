@@ -70,18 +70,6 @@ public class Main {
         }
     }
 
-    private static void calcularTicketMedio(LojaService lojaService) {
-        System.out.println("Ticket Medio");
-        lojaService.calcularTicketMedio();
-    }
-
-    private static void listarProdutosMaisVendidos(LojaService lojaService) {
-        System.out.println("Top 3 produtos mais vendidos");
-        for (Map.Entry<Produto, Integer> listarProdutosMaisVendido : lojaService.listarProdutosMaisVendidos()) {
-            System.out.println(listarProdutosMaisVendido.getKey().getNome() + " -> " + listarProdutosMaisVendido.getValue());
-        }
-    }
-
     private static void listarPedidosPorCliente(Scanner entrada, LojaService lojaService) {
         System.out.println("Digite o id do cliente: ");
         int id = entrada.nextInt();
@@ -110,7 +98,7 @@ public class Main {
         System.out.println("15 - Cancelar pedido");
         System.out.println("16 - Confirmar pedido");
         System.out.println("17 - Pedidos por cliente");
-        System.out.println("18 - Relatorio da loja");
+        System.out.println("18 - Persistence da loja");
         System.out.println("19 - Faturamento Total");
     }
 

@@ -3,9 +3,9 @@ package entities;
 import java.util.Objects;
 
 public class ItemPedido {
-    private Produto produto;
-    private int quantidadeProduto;
-    private double precoProdutoMomentoCompra;
+    private final Produto produto;
+    private final int quantidadeProduto;
+    private final double precoProdutoMomentoCompra;
 
     public ItemPedido(Produto produto, int quantidadeProduto) {
         if (quantidadeProduto < 0) throw new IllegalArgumentException("Valor invalido!");

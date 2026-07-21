@@ -1,0 +1,29 @@
+package services;
+
+import entities.Pedido;
+import exceptions.OperacaoArquivo;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.time.format.DateTimeFormatter;
+
+public class PersistencePedido implements Persistence<Pedido> {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    @Override
+    public void salvar(Pedido item) {
+        Path caminho = Path.of("data\\pedidos.csv");
+        try {
+            if (Files.notExists(caminho.getParent())) {
+                Files.createDirectories(caminho.getParent());
+            }
+            Files.writeString(caminho,
+                    "\n" + item.getId() + ";" + item.getCliente().getId() + ";" + item.getDataPedido().format(FORMATTER) + ";" + item.getStatusPedido() + System.lineSeparator(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            throw new OperacaoArquivo(e.getMessage());
+        }
+    }
+}

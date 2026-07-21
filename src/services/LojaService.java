@@ -20,16 +20,26 @@ public class LojaService {
     private RepositorioCliente repositorioCliente = new RepositorioCliente();
     private RepositorioProduto repositorioProduto = new RepositorioProduto();
 
+    private Persistence<Produto> produtoPersistence = new PersistenceProduto();
+    private Persistence<Cliente> clientePersistence = new PersistenceCliente();
+    private Persistence<Pedido> pedidoPersistence = new PersistencePedido();
+
     public boolean cadastrarProduto(Produto produto) {
-        return repositorioProduto.salvar(produto);
+        boolean isCadastrado = repositorioProduto.salvar(produto);
+        produtoPersistence.salvar(produto);
+        return isCadastrado;
     }
 
     public boolean cadastrarCliente(Cliente cliente) {
-        return repositorioCliente.salvar(cliente);
+        boolean isCadastrado = repositorioCliente.salvar(cliente);
+        clientePersistence.salvar(cliente);
+        return isCadastrado;
     }
 
     public boolean cadastrarPedido(Pedido pedido) {
-        return repositorioPedido.salvar(pedido);
+        boolean isCadastrado = repositorioPedido.salvar(pedido);
+        pedidoPersistence.salvar(pedido);
+        return isCadastrado;
     }
 
     public void removerProduto(Produto produto) {

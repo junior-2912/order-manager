@@ -1,6 +1,7 @@
 package entities;
 
 import enums.StatusPedido;
+import exceptions.PedidoFinalizadoException;
 import exceptions.ProdutoNaoEncontradoException;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,9 @@ public class Pedido {
     }
 
     public void setStatusPedido(StatusPedido statusPedido) {
+        if (this.statusPedido.equals(StatusPedido.PAGO)) {
+            throw new PedidoFinalizadoException("Pedido ja esta finalizado, nao pode mais ser alterado!");
+        }
         this.statusPedido = statusPedido;
     }
 
