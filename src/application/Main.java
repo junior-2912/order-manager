@@ -119,7 +119,7 @@ public class Main {
         System.out.print("Digite o email do cliente: ");
         String email = entrada.nextLine();
 
-        if (lojaService.cadastrarCliente(new Cliente(nome, id, email))) {
+        if (lojaService.cadastrarCliente(new Cliente(id, nome, email))) {
             System.out.println("Cliente cadastrado com sucesso!");
         } else {
             System.out.println("Cliente é nulo!");
