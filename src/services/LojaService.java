@@ -242,8 +242,6 @@ public class LojaService {
                 Produto produto = repositorioProduto.buscarPorId(Integer.parseInt(dados[1]));
                 pedido.addItemPedido(new ItemPedido(produto, Integer.parseInt(dados[2])));
             }
-
-
         } catch (IOException e) {
             throw new OperacaoArquivo(e.getMessage());
         }

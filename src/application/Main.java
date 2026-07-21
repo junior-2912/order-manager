@@ -44,7 +44,8 @@ public class Main {
                     case 15 -> cancelarPedido(entrada, lojaService);
                     case 16 -> confirmarPedido(entrada, lojaService);
                     case 17 -> listarPedidosPorCliente(entrada, lojaService);
-                    case 18 -> gerarRelatorio(lojaService);
+                    case 18 -> buscarProdutoPorNome(entrada, lojaService);
+                    case 19 -> gerarRelatorio(lojaService);
                     default -> System.out.println("Digite um numero valido!");
                 }
             } catch (ClienteDuplicadoException | ClienteNaoEncontradoException | PedidoDuplicadoException |
@@ -58,7 +59,13 @@ public class Main {
         entrada.close();
     }
 
-    private static void gerarRelatorio(LojaService lojaService) {
+    public static void buscarProdutoPorNome(Scanner entrada, LojaService lojaService) {
+        entrada.nextLine();
+        System.out.print("Digite o nome do produto: ");
+        String nome = entrada.nextLine();
+    }
+
+    public static void gerarRelatorio(LojaService lojaService) {
         System.out.println("RELATORIO GERAL DA LOJA");
         System.out.println("Pedidos realizados: " + lojaService.buscarTodosPedidos().size());
         System.out.println("Faturamento total: " + lojaService.calcularFaturamentoTotal());
@@ -70,7 +77,7 @@ public class Main {
         }
     }
 
-    private static void listarPedidosPorCliente(Scanner entrada, LojaService lojaService) {
+    public static void listarPedidosPorCliente(Scanner entrada, LojaService lojaService) {
         System.out.println("Digite o id do cliente: ");
         int id = entrada.nextInt();
 
@@ -99,7 +106,7 @@ public class Main {
         System.out.println("16 - Confirmar pedido");
         System.out.println("17 - Pedidos por cliente");
         System.out.println("18 - Persistence da loja");
-        System.out.println("19 - Faturamento Total");
+        System.out.println("19 - Relatorio geral");
     }
 
     public static void cadastrarCliente(Scanner entrada, LojaService lojaService) {

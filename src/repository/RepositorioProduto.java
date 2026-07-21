@@ -24,7 +24,7 @@ public class RepositorioProduto implements Repositorio<Produto> {
 
     @Override
     public List<Produto> buscarTodos() {
-        return List.copyOf(produtos);
+        return List.copyOf(produtos.stream().sorted(Comparator.comparing(Produto::getPreco).reversed()).toList());
     }
 
     @Override
