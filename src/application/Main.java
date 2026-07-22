@@ -60,7 +60,6 @@ public class Main {
     }
 
     public static void buscarProdutoPorNome(Scanner entrada, LojaService lojaService) {
-        entrada.nextLine();
         System.out.print("Digite o nome do produto: ");
         String nome = entrada.nextLine();
         List<Produto> produtos = lojaService.buscarProdutoPorNome(nome);
@@ -114,7 +113,7 @@ public class Main {
         System.out.println("15 - Cancelar pedido");
         System.out.println("16 - Confirmar pedido");
         System.out.println("17 - Pedidos por cliente");
-        System.out.println("18 - Persistence da loja");
+        System.out.println("18 - Buscar produto por nome");
         System.out.println("19 - Relatorio geral");
     }
 
@@ -175,6 +174,8 @@ public class Main {
         int quantidade = entrada.nextInt();
         if (!lojaService.adicionarProdutoAoEstoque(quantidade, id)) {
             System.out.println("Quantidade deve ser maior que zero!");
+        } else {
+            System.out.println("Adicionado com sucesso!");
         }
     }
 
@@ -257,7 +258,7 @@ public class Main {
     public static void confirmarPedido(Scanner entrada, LojaService lojaService) {
         System.out.print("Digite o id do pedido a ser finalizado: ");
         double valor = lojaService.confirmarPedido(entrada.nextInt());
-        System.out.printf("Valor total: " + String.format("%.2f", valor));
+        System.out.printf("Valor total: " + String.format("%.2f", valor) + System.lineSeparator());
     }
 
 

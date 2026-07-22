@@ -230,7 +230,7 @@ public class LojaService {
                 String[] dados = linha.split(";");
                 Pedido pedido = new Pedido(Integer.parseInt(dados[0]),
                         repositorioCliente.buscarPorId(Integer.parseInt(dados[1])),
-                        LocalDateTime.parse(dados[2], FORMATTER),
+                        LocalDateTime.parse(dados[2]),
                         StatusPedido.valueOf(dados[3]));
 
                 repositorioPedido.salvar(pedido);

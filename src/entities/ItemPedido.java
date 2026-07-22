@@ -52,11 +52,10 @@ public class ItemPedido {
     //Ajustar esse toString
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ItemPedido{");
-        sb.append("produto=").append(produto);
-        sb.append(", quantidadeProduto=").append(quantidadeProduto);
-        sb.append(", precoProdutoMomentoCompra=").append(precoProdutoMomentoCompra);
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder("");
+        sb.append(produto.getNome());
+        sb.append(" - ").append(quantidadeProduto);
+        sb.append(" - ").append(precoProdutoMomentoCompra);
         return sb.toString();
     }
 }
