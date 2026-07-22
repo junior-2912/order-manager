@@ -14,6 +14,12 @@ public class ItemPedido {
         this.precoProdutoMomentoCompra = produto.getPreco();
     }
 
+    public ItemPedido(Produto produto, int quantidadeProduto, double precoProdutoMomentoCompra) {
+        this.produto = produto;
+        this.quantidadeProduto = quantidadeProduto;
+        this.precoProdutoMomentoCompra = precoProdutoMomentoCompra;
+    }
+
     public Produto getProduto() {
         return produto;
     }

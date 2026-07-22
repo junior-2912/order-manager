@@ -80,7 +80,7 @@ public class LojaService {
     }
 
     public List<Produto> buscarTodosProdutos() {
-        return repositorioProduto.buscarTodos();
+        return repositorioProduto.buscarTodos().stream().sorted(Comparator.comparing(Produto::getPreco).reversed()).toList();
     }
 
     public List<Cliente> buscarTodosClientes() {
@@ -183,6 +183,9 @@ public class LojaService {
 
     private void carregarProdutos(Path caminho) {
         try {
+            if (Files.notExists(caminho)) {
+                return;
+            }
             List<String> linhas = Files.readAllLines(caminho);
 
             for (String linha : linhas) {
@@ -201,6 +204,9 @@ public class LojaService {
 
     private void carregarClientes(Path caminho) {
         try {
+            if (Files.notExists(caminho)) {
+                return;
+            }
             List<String> linhas = Files.readAllLines(caminho);
 
             for (String linha : linhas) {
@@ -215,6 +221,9 @@ public class LojaService {
 
     private void carregarPedidos(Path caminho) {
         try {
+            if (Files.notExists(caminho)) {
+                return;
+            }
             List<String> linhas = Files.readAllLines(caminho);
 
             for (String linha : linhas) {
@@ -233,6 +242,9 @@ public class LojaService {
 
     private void carregarItens(Path caminho) {
         try {
+            if (Files.notExists(caminho)) {
+                return;
+            }
             List<String> linhas = Files.readAllLines(caminho);
 
             for (String linha : linhas) {
@@ -240,10 +252,17 @@ public class LojaService {
 
                 Pedido pedido = repositorioPedido.buscarPorId(Integer.parseInt(dados[0]));
                 Produto produto = repositorioProduto.buscarPorId(Integer.parseInt(dados[1]));
-                pedido.addItemPedido(new ItemPedido(produto, Integer.parseInt(dados[2])));
+                pedido.addItemPedido(new ItemPedido(produto, Integer.parseInt(dados[2]), Double.parseDouble(dados[3])));
             }
         } catch (IOException e) {
             throw new OperacaoArquivo(e.getMessage());
         }
+    }
+
+    public List<Produto> buscarProdutoPorNome(String nome) {
+        return repositorioProduto.buscarTodos()
+                .stream()
+                .filter(p -> p.getNome().equalsIgnoreCase(nome))
+                .toList();
     }
 }

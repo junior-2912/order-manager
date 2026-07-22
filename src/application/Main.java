@@ -63,6 +63,15 @@ public class Main {
         entrada.nextLine();
         System.out.print("Digite o nome do produto: ");
         String nome = entrada.nextLine();
+        List<Produto> produtos = lojaService.buscarProdutoPorNome(nome);
+        if (produtos.isEmpty()) {
+            throw new ProdutoNaoEncontradoException("Produto nao encontrado!");
+        } else {
+            System.out.println("Produto encontrado!");
+            for (Produto produto : produtos) {
+                System.out.println(produto);
+            }
+        }
     }
 
     public static void gerarRelatorio(LojaService lojaService) {
