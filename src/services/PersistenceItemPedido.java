@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
 public class PersistenceItemPedido {
-    public void salvar(Pedido pedido) {
+    public static void salvar(Pedido pedido) {
         try {
             Path caminho = Path.of("data\\itens_pedido.csv");
             if (Files.notExists(caminho.getParent())) {

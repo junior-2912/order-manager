@@ -113,6 +113,7 @@ public class LojaService {
         if (isAdd) {
             produto.baixarEstoque(quantidadeProduto);
         }
+        PersistenceItemPedido.salvar(pedido);
         return isAdd;
     }
 
@@ -189,6 +190,9 @@ public class LojaService {
             List<String> linhas = Files.readAllLines(caminho);
 
             for (String linha : linhas) {
+                if (linha.isBlank()) {
+                    continue;
+                }
                 String[] dados = linha.split(";");
                 Produto produto = new Produto(Integer.parseInt(dados[0]),
                         dados[1],
@@ -210,6 +214,9 @@ public class LojaService {
             List<String> linhas = Files.readAllLines(caminho);
 
             for (String linha : linhas) {
+                if (linha.isBlank()) {
+                    continue;
+                }
                 String[] dados = linha.split(";");
                 Cliente cliente = new Cliente(Integer.parseInt(dados[0]), dados[1], dados[2]);
                 repositorioCliente.salvar(cliente);
@@ -227,6 +234,9 @@ public class LojaService {
             List<String> linhas = Files.readAllLines(caminho);
 
             for (String linha : linhas) {
+                if (linha.isBlank()) {
+                    continue;
+                }
                 String[] dados = linha.split(";");
                 Pedido pedido = new Pedido(Integer.parseInt(dados[0]),
                         repositorioCliente.buscarPorId(Integer.parseInt(dados[1])),
@@ -248,6 +258,9 @@ public class LojaService {
             List<String> linhas = Files.readAllLines(caminho);
 
             for (String linha : linhas) {
+                if (linha.isBlank()) {
+                    continue;
+                }
                 String[] dados = linha.split(";");
 
                 Pedido pedido = repositorioPedido.buscarPorId(Integer.parseInt(dados[0]));

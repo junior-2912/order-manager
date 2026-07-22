@@ -21,9 +21,6 @@ public class PersistencePedido implements Persistence<Pedido> {
             Files.writeString(caminho,item.getId() + ";" + item.getCliente().getId() + ";" + item.getDataPedido() + ";" + item.getStatusPedido() + System.lineSeparator(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.APPEND);
-
-            PersistenceItemPedido itemPedido = new PersistenceItemPedido();
-            itemPedido.salvar(item);
         } catch (IOException e) {
             throw new OperacaoArquivo(e.getMessage());
         }
